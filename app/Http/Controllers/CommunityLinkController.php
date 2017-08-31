@@ -18,6 +18,11 @@ class CommunityLinkController extends Controller
     {
     	//CommunityLink::create($request->all());
 
+    	$this->validate($request, [
+    		'title' => 'required',
+    		'link'  => 'required|active_url'
+    	]);
+
     	CommunityLink::from(auth()->user())
     				->contribute($request->all());
 
