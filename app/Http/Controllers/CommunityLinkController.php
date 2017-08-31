@@ -12,4 +12,15 @@ class CommunityLinkController extends Controller
     	$links = CommunityLink::paginate(10);
     	return view('community.index', compact('links'));	
     }
+
+
+    public function store(Request $request)
+    {
+    	//CommunityLink::create($request->all());
+
+    	CommunityLink::from(auth()->user())
+    				->contribute($request->all());
+
+    	return back();
+    }
 }

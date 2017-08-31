@@ -23,3 +23,4 @@ Route::get('/home', 'HomeController@index')->name('home');
 /* Application Route */
 
 Route::get('community', 'CommunityLinkController@index');
+Route::post('community', 'CommunityLinkController@store');
