@@ -11,6 +11,9 @@
 
 				@foreach($links as $link)
 				<li>
+					<span class="label label-default" style="background: {{ $link->channel->color }}">
+						{{ $link->channel->title }}
+					</span>
 					<a href="{{ $link->link }}" target="_blank">{{ $link->title }}</a>
 					Contributed By <a href="#">{{ $link->creator->name }}</a> 
 					{{ $link->updated_at->diffForHumans() }}

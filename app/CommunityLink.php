@@ -20,10 +20,6 @@ class CommunityLink extends Model
 
     	$link->user_id = $user->id;
 
-    	//Temporany
-
-    	$link->channel_id = 1;
-
     	return $link;
 
     }
@@ -32,5 +28,10 @@ class CommunityLink extends Model
     public function contribute($attributes)
     {
     	return $this->fill($attributes)->save();
+    }
+
+    public function channel()
+    {
+        return $this->belongsTo(Channel::class);    
     }
 }
