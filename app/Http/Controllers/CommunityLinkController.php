@@ -10,7 +10,7 @@ class CommunityLinkController extends Controller
 {
     public function index()
     {
-    	$links = CommunityLink::paginate(10);
+    	$links = CommunityLink::where('approved', 1)->paginate(10);
     	$channels = Channel::orderBy('title', 'asec')->get();
     	return view('community.index', compact('links', 'channels'));	
     }
