@@ -57,4 +57,13 @@ class CommunityLink extends Model
     {
         return static::where('link', $link)->first();
     }
+
+    public function scopeforChannel($builder, $channel)
+    {
+        if ($channel->id) {
+            $builder->where('channel_id', $channel->id);
+        }
+
+        return $builder;
+    }
 }

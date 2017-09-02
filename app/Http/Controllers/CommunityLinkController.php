@@ -10,11 +10,15 @@ use Illuminate\Http\Request;
 
 class CommunityLinkController extends Controller
 {
-    public function index()
+    public function index(Channel $channel = null)
     {
-    	$links = CommunityLink::where('approved', 1)->latest('updated_at')->paginate(10);
+    	$links = CommunityLink::forChannel($channel)
+                ->where('approved', 1)
+                ->latest('updated_at')
+                ->paginate(3);
+
     	$channels = Channel::orderBy('title', 'asec')->get();
-    	return view('community.index', compact('links', 'channels'));	
+    	return view('community.index', compact('links', 'channels', 'channel'));	
     }
 
 

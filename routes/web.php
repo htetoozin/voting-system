@@ -24,3 +24,4 @@ Route::get('/home', 'HomeController@index')->name('home');
 
 Route::get('community', 'CommunityLinkController@index');
 Route::post('community', 'CommunityLinkController@store');
+Route::get('community/{channel}', 'CommunityLinkController@index');
