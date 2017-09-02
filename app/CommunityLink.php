@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Exceptions\CommunityLinkAlreadySubmitted;
 
 class CommunityLink extends Model
 {
@@ -31,6 +32,12 @@ class CommunityLink extends Model
 
     public function contribute($attributes)
     {
+        if ($existing = $this->hasAlreadyHasBeenSubmitted($attributes['link'])) {
+           $existing->touch();
+
+           throw new CommunityLinkAlreadySubmitted;
+           
+        }
     	return $this->fill($attributes)->save();
     }
 
@@ -44,5 +51,10 @@ class CommunityLink extends Model
     public function channel()
     {
         return $this->belongsTo(Channel::class);    
+    }
+
+    protected function hasAlreadyHasBeenSubmitted($link)
+    {
+        return static::where('link', $link)->first();
     }
 }

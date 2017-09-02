@@ -4,37 +4,36 @@ namespace App\Http\Controllers;
 
 use App\CommunityLink;
 use App\Channel;
+use App\Exceptions\CommunityLinkAlreadySubmitted;
+use App\Http\Requests\CommunityLinkForm;
 use Illuminate\Http\Request;
 
 class CommunityLinkController extends Controller
 {
     public function index()
     {
-    	$links = CommunityLink::where('approved', 1)->paginate(10);
+    	$links = CommunityLink::where('approved', 1)->latest('updated_at')->paginate(10);
     	$channels = Channel::orderBy('title', 'asec')->get();
     	return view('community.index', compact('links', 'channels'));	
     }
 
 
-    public function store(Request $request)
+    public function store(CommunityLinkForm $form)
     {
-    	//CommunityLink::create($request->all());
+   
+    	try {
+            
+    		$form->persist();
 
-    	$this->validate($request, [
-    		'channel_id' => 'required|exists:channels,id',
-    		'title' => 'required',
-    		'link'  => 'required|active_url|unique:community_links'
-    	]);
+            if (auth()->user()->isTrusted()) {
+                flash()->success('Thank for your contribution');
+            }else{
+                flash()->overlay('This contribution will be approved shortly.', 'Thanks!');
+            }
 
-
-    	if (auth()->user()->isTrusted()) {
-    		flash()->success('Thank for your contribution');
-    	}else{
-    		flash()->overlay('This contribution will be approved shortly.', 'Thanks!');
-    	}
-
-    	CommunityLink::from(auth()->user())
-    				->contribute($request->all());
+        } catch (CommunityLinkAlreadySubmitted $e) {
+            flash()->overlay("We'll instead bump the timestamps and bring that link back to the top. Thanks!", 'That Link Has Already Been Submitted'); 
+        }    
 
     	return back();
     }

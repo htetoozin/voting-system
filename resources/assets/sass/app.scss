@@ -7,3 +7,8 @@
 
 // Bootstrap
 @import "~bootstrap-sass/assets/stylesheets/bootstrap";
+
+
+.list-group-item > .label{
+	margin-right: 1em;
+}

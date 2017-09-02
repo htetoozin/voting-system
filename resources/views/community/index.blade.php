@@ -4,12 +4,12 @@
 @section('content')
 	<div class="row">
 		<div class="col-md-8">
-			<h1>Community</h1>
-			<ul>
+			<h3>Community</h3>
+			<ul class="list-group">
 				@if(count($links))
 
 					@foreach($links as $link)
-					<li>
+					<li class="list-group-item">
 						<span class="label label-default" style="background: {{ $link->channel->color }}">
 							{{ $link->channel->title }}
 						</span>
