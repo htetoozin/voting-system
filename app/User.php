@@ -31,4 +31,14 @@ class User extends Authenticatable
     {
         return !! $this->trusted;    
     }
+
+    public function voteFor(CommunityLink $link)
+    {
+        return $link->votes()->create(['user_id' => $this->id]);
+    }
+
+    public function votedFor(CommunityLink $link)
+    {
+        return $link->votes->contains('user_id', $this->id);
+    }
 }
