@@ -2,10 +2,14 @@
 	@if(count($links))
 
 	@foreach($links as $link)
-	<li class="list-group-item">
-		@if(Auth::check() && Auth::user()->votedFor($link))
-			+1
-		@endif
+	<li class="CommunityLink list-group-item">
+
+		<form method="POST" action="/votes/{{ $link->id }}">
+			{{ csrf_field() }}
+			<button class="btn {{ Auth::user()->votedFor($link) ? 'btn-success' : 'btn-default'}}" {{ Auth::guest() ? 'disabled' : ''}}>
+				{{ $link->votes->count() }}
+			</button>
+		</form>
 		<a href="/community/{{ $link->channel->slug }}" class="label label-default" style="background: {{ $link->channel->color }}">
 			{{ $link->channel->title }}
 		</a>
@@ -21,4 +25,4 @@
 	@endif
 </ul>
 
-{{ $links->links() }}
+{{ $links->appends(request()->query())->links() }}

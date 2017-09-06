@@ -32,9 +32,18 @@ class User extends Authenticatable
         return !! $this->trusted;    
     }
 
-    public function voteFor(CommunityLink $link)
+    public function votes()
     {
-        return $link->votes()->create(['user_id' => $this->id]);
+        return $this->belongsToMany(CommunityLink::class, 'community_links_votes')
+                ->withTimestamps();
+    }
+
+    public function toggleVoteFor(CommunityLink $link)
+    {
+        CommunityLinkVote::firstOrNew([
+            'user_id' => $this->id,
+            'community_link_id' => $link->id
+        ])->toggle();
     }
 
     public function votedFor(CommunityLink $link)
